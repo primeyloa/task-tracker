@@ -30,22 +30,18 @@ def main():
         match content[0]:
             case "list":
                 # Format: list
-                load_tasks()
                 list_tasks()
 
             case "list-done":
                 # Format: list-done
-                file = load_tasks()
                 list_done()
 
             case "list-in-progress":
                 # Format: list
-                file = load_tasks()
                 list_in_progress()
 
             case "list-todo":
                 # Format: list
-                file = load_tasks()
                 list_todo()
 
             case "add":
@@ -62,7 +58,6 @@ def main():
                     print("Task could not be added due to error: {}".format(e))
 
             case "update":
-                file = load_tasks()
                 # Format: update 1 "Add groceries"
                 task_id = int(content[1])
                 task = ""
@@ -76,26 +71,22 @@ def main():
                 update_task(task_id, task)
 
             case "delete":
-                file = load_tasks()
                 # Format: delete 1
-                task_id = str(content[1])
+                task_id = int(content[1])
                 delete_task(task_id)
 
             case "mark-todo":
-                file = load_tasks()
                 # Format: mark-todo 4
-                task_id = str(content[1])
+                task_id = int(content[1])
                 mark_todo(task_id)
 
             case "mark-done":
-                file = load_tasks()
                 # Format: mark-done 2
-                task_id = str(content[1])
+                task_id = int(content[1])
                 mark_done(task_id)
 
             case "mark-in-progress":
-                file = load_tasks()
-                task_id = str(content[1])
+                task_id = int(content[1])
                 mark_in_progress(task_id)
 
             case "end":
@@ -196,32 +187,45 @@ def mark_done(task_id):
 
 def list_tasks():
     file = load_tasks()
+    for obj in file:
+        print("{} {}".format(obj["id"], obj["task"]))
 
-    pass
 
 
 def list_done():
     file = load_tasks()
-
-    pass
-
+    for obj in file:
+        if obj["status"] == "done":
+            print("{}. {}".format(obj["id"], obj["task"]))
+    
 
 def list_todo():
     file = load_tasks()
-
-    pass
-
+    for obj in file:
+        if obj["status"] == "todo":
+            print("{}. {}".format(obj["id"], obj["task"]))
+    
 
 def list_in_progress():
     file = load_tasks()
-
-    pass
+    for obj in file:
+        if obj["status"] == "in-progress":
+            print("{}. {}".format(obj["id"], obj["task"]))    
 
 
 def delete_task(task_id):
     file = load_tasks()
-
-    pass
+    try:
+        i = 0
+        for obj in file:
+            if obj["id"] == task_id:
+                del file[i+1]
+                save_task(file)
+                print("Task deleted successfully!")
+                i =+1
+    except Exception as e:
+        print("Could not delete task: {}".format(e))
+    
 
 
 if __name__ == "__main__":

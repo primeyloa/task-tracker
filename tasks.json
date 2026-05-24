@@ -1,18 +1,8 @@
 [
     {
-        "id": 1,
-        "task": "Jerome changed again!",
-        "status": "todo"
-    },
-    {
         "id": 2,
         "task": "I can shout",
-        "status": "todo"
-    },
-    {
-        "id": 3,
-        "task": "Make me cum",
-        "status": "todo"
+        "status": "in-progress"
     },
     {
         "id": 1,
