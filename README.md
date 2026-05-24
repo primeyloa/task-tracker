@@ -33,4 +33,4 @@ $$
 Kamikaze.
 $$
 
-*[Github](https://github.com/primeyloa/task-tracker.git)*
+*(https://github.com/primeyloa/task-tracker.git)*
