@@ -1,13 +1,9 @@
 # The program begins with a menu showing available actions and how and what commands to enter
 # Program runs a while loop until user enters command to end program
 # I want to desist from opening the file on the onset and maintaining it till the program ends, and instead open and close after every function call/execution
-"""Receiving user inputs:
-1. User can and will use positional arguments eg. 1, 2, 3 as per the menu that is shown
-2. Commands preceed the user's additional input
-3. User input is parsed separately from the preceeding command and fed to the complimetary function
-"""
 
-from modules.add import add_task
+import json
+import os
 
 
 def main():
@@ -22,36 +18,85 @@ def main():
         """)
 
     RUN_PROGRAM = True  # This variable is what keeps the program running
-
     while RUN_PROGRAM:
+        # The file is loaded again and again
+
         # The main loop where actions can be done
         user_result = str(input("Action:> "))
         content = user_result.split(
-            " "
+            " "  # split made by spacing - convenient
         )  # converting the string commands to an array in order to ascertain command
+
         match content[0]:
             case "list":
-                break
+                # Format: list
+                load_tasks()
+                list_tasks()
+
+            case "list-done":
+                # Format: list-done
+                file = load_tasks()
+                list_done()
+
+            case "list-in-progress":
+                # Format: list
+                file = load_tasks()
+                list_in_progress()
+
+            case "list-todo":
+                # Format: list
+                file = load_tasks()
+                list_todo()
 
             case "add":
-                task = str(content[1:])
-                task = task.replace(task[0:2], "")
-                task = task.replace(task[-2:], "")
-                task = task.strip()
-                add_task(task)
-                break
+                try:
+                    # Format: add "Go jogging"
+                    task = ""
+                    for i in range(1, len(content)):
+                        task = task + " " + content[i]
+                    task = task[2:-1]
+                    print(task)
+                    task = task.strip()
+                    add_task(task)
+                except Exception as e:
+                    print("Task could not be added due to error: {}".format(e))
 
             case "update":
-                break
+                file = load_tasks()
+                # Format: update 1 "Add groceries"
+                task_id = int(content[1])
+                task = ""
+                for i in range(
+                    2, len(content)
+                ):  # we use similar conventions from adding tasks, but here, we start from 2
+                    task = task + " " + content[i]
+                task = task[2:-1]
+                print(task)
+                task = task.strip()
+                update_task(task_id, task)
 
             case "delete":
-                break
+                file = load_tasks()
+                # Format: delete 1
+                task_id = str(content[1])
+                delete_task(task_id)
+
+            case "mark-todo":
+                file = load_tasks()
+                # Format: mark-todo 4
+                task_id = str(content[1])
+                mark_todo(task_id)
 
             case "mark-done":
-                break
+                file = load_tasks()
+                # Format: mark-done 2
+                task_id = str(content[1])
+                mark_done(task_id)
 
             case "mark-in-progress":
-                break
+                file = load_tasks()
+                task_id = str(content[1])
+                mark_in_progress(task_id)
 
             case "end":
                 RUN_PROGRAM = False
@@ -59,8 +104,125 @@ def main():
 
             case _:
                 RUN_PROGRAM = True
+
         print("> Type in a command")
     print("Program has ended")
 
 
-main()
+file_name = "tasks.json"
+
+
+def load_tasks():
+    # Check if file exists and is not empty
+    if not os.path.exists(file_name) or os.path.getsize(file_name) == 0:
+        return []  # Return an empty list so len(file) doesn't crash
+    with open(file_name, "r") as file:
+        # content = file.read()
+        return json.loads(file.read())
+
+
+def add_task(task):
+    file = load_tasks()
+    content = task
+    content1 = "".join(content[0:])
+    default_status = "todo"
+    task_obj = {"id": len(file) + 1, "task": content1, "status": default_status}
+    file.append(task_obj)
+    print("Task added successfully!")
+    return save_task(file)
+
+
+def save_task(task):
+    with open(file_name, "w") as file:
+        json.dump(task, file, indent=4)
+
+
+def update_task(task_id, task):
+    file = load_tasks()
+    try:
+        for obj in file:
+            if obj["id"] == task_id:
+                obj["task"] = task
+                # file.append(obj)
+                save_task(file)
+                print("Task updated successfully!")
+
+    except Exception as e:
+        print("Task could not be updated: {}".format(e))
+
+
+def mark_todo(task_id):
+    file = load_tasks()
+    try:
+        for obj in file:
+            if obj["id"] == task_id:
+                obj["status"] = "todo"
+                # file.append(obj)
+                save_task(file)
+                print("Task updated successfully!")
+
+    except Exception as e:
+        print("Task could not be updated: {}".format(e))
+
+
+def mark_in_progress(task_id):
+    file = load_tasks()
+    try:
+        for obj in file:
+            if obj["id"] == task_id:
+                obj["status"] = "in-progress"
+                # file.append(obj)
+                save_task(file)
+                print("Task updated successfully!")
+
+    except Exception as e:
+        print("Task could not be updated: {}".format(e))
+
+
+def mark_done(task_id):
+    file = load_tasks()
+    try:
+        for obj in file:
+            if obj["id"] == task_id:
+                obj["status"] = "done"
+                # file.append(obj)
+                save_task(file)
+                print("Task updated successfully!")
+
+    except Exception as e:
+        print("Task could not be updated: {}".format(e))
+    pass
+
+
+def list_tasks():
+    file = load_tasks()
+
+    pass
+
+
+def list_done():
+    file = load_tasks()
+
+    pass
+
+
+def list_todo():
+    file = load_tasks()
+
+    pass
+
+
+def list_in_progress():
+    file = load_tasks()
+
+    pass
+
+
+def delete_task(task_id):
+    file = load_tasks()
+
+    pass
+
+
+if __name__ == "__main__":
+    main()

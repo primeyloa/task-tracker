@@ -18,7 +18,8 @@
 ---
 - 'mark':
   - 'mark-in-progress <`argument`>': This command marks tasks with the id given as an argument as 'in-progress'
-  - 'mark-todo <`argument`>':
+  - 'mark-todo <`argument`>': This command marks a task with task id given as argument as 'todo'
+  - 'mark-done <`argument`>: This command marks a task with given task id as 'done'
 
 ##### I added the functions as modules and imported them. I thought it would be cool and make the code readable.
 
