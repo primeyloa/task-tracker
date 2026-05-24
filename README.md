@@ -1,4 +1,8 @@
 ### Task Tracker application:
+This is a python based CLI application that mimics terminal commands to access a simple json based storage for tasks. 
+You can create, update, read and delete tasks. 
+You see what I did there.... CRUD 
+XD.... O__O 
 ##### These are some of the commands you can make:
 ---
 - 'list':
