@@ -1,0 +1,12 @@
+CLI Task Tracker:
+-----------------
+One small lesson I've learned is that when using the match/case in Python, it is essential to leave out the break keyword out of all the cases except the one that terminates the program
+
+"""Receiving user inputs:
+1. User can and will use positional arguments eg. 1, 2, 3 as per the menu that is shown
+2. Commands preceed the user's additional input
+3. User input is parsed separately from the preceeding command and fed to the complimetary function
+"""
+
+I am keeping the definitions in the main file because it's becoming a headache separating the tasks list from the tasks returned from the json file.
+
